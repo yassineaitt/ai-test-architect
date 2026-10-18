@@ -1,0 +1,96 @@
+[project]
+name = "ai-test-architect"
+version = "0.1.0"
+description = "CLI that uses the Anthropic API to generate pytest API tests from OpenAPI specs, triage failed test runs, and suggest self-healing locators for broken Playwright selectors."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Yassine Ait Tamarmoucht" }]
+requires-python = ">=3.12"
+keywords = ["testing", "ai", "anthropic", "claude", "pytest", "openapi", "playwright", "test-automation"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = [
+  "anthropic>=1.15,<2",
+  "pydantic>=2.11,<3",
+  "typer>=0.17",
+  "rich>=14",
+  "pyyaml>=6.0",
+  "openapi-spec-validator>=0.7",
+  "junitparser>=3.2",
+  "httpx>=0.28",
+]
+
+[project.scripts]
+ai-test-architect = "ai_test_architect.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/yassineaitt/ai-test-architect"
+Issues = "https://github.com/yassineaitt/ai-test-architect/issues"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4",
+  "pytest-cov>=6.2",
+  "respx>=0.22",
+  "ruff>=0.12",
+  "mypy>=1.17",
+  "types-PyYAML",
+  "pre-commit>=4",
+  "genbadge[coverage]>=1.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_test_architect"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PT", "RET", "RUF", "ANN", "S", "T20", "PL"]
+ignore = ["ANN401", "PLR0913", "S101"]
+per-file-ignores = { "tests/**" = ["S", "PLR2004", "ANN"], "src/ai_test_architect/cli.py" = ["T20", "PLR0913"] }
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+packages = ["ai_test_architect"]
+
+[[tool.mypy.overrides]]
+module = ["junitparser.*", "openapi_spec_validator.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+xfail_strict = true
+filterwarnings = ["error", "ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["ai_test_architect"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = false
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "if __name__ == .__main__.:"]

@@ -1,0 +1,28 @@
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+reports/
+
+# env & secrets
+.env
+.env.*
+!.env.example
+
+# generated output (examples are committed under examples/)
+out/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
