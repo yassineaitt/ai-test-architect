@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: Pet Shelter API
+  version: 1.2.0
+  description: Minimal example used by `ai-test-architect generate`.
+servers:
+  - url: https://petshelter.example.com/api/v1
+tags:
+  - name: pets
+  - name: adoptions
+paths:
+  /pets:
+    get:
+      tags: [pets]
+      operationId: listPets
+      summary: List pets, optionally filtered by status
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema: { type: string, enum: [available, pending, adopted] }
+        - name: limit
+          in: query
+          required: false
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        "200":
+          description: A page of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Pet" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+    post:
+      tags: [pets]
+      operationId: createPet
+      summary: Register a new pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewPet" }
+            example: { name: "Mochi", species: "cat", ageMonths: 14 }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Pet" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /pets/{petId}:
+    parameters:
+      - name: petId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [pets]
+      operationId: getPet
+      summary: Fetch a single pet
+      responses:
+        "200":
+          description: The pet
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Pet" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [pets]
+      operationId: deletePet
+      summary: Remove a pet record
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /pets/{petId}/adoptions:
+    parameters:
+      - name: petId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    post:
+      tags: [adoptions]
+      operationId: requestAdoption
+      summary: Submit an adoption request for a pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AdoptionRequest" }
+      responses:
+        "202":
+          description: Request accepted for review
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Adoption" }
+        "409":
+          description: Pet is not available
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+components:
+  responses:
+    BadRequest:
+      description: Validation failed
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: Missing or invalid bearer token
+    NotFound:
+      description: No such resource
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  schemas:
+    Pet:
+      type: object
+      required: [id, name, species, status]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        species: { type: string, enum: [dog, cat, rabbit] }
+        ageMonths: { type: integer, minimum: 0 }
+        status: { type: string, enum: [available, pending, adopted] }
+    NewPet:
+      type: object
+      required: [name, species]
+      properties:
+        name: { type: string, minLength: 1 }
+        species: { type: string, enum: [dog, cat, rabbit] }
+        ageMonths: { type: integer, minimum: 0 }
+    AdoptionRequest:
+      type: object
+      required: [adopterEmail]
+      properties:
+        adopterEmail: { type: string, format: email }
+        message: { type: string, maxLength: 500 }
+    Adoption:
+      type: object
+      required: [id, petId, status]
+      properties:
+        id: { type: string, format: uuid }
+        petId: { type: string, format: uuid }
+        status: { type: string, enum: [pending, approved, rejected] }
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
