@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ai-test-architect = "ai_test_architect.cli:app"
+ai-test-architect = "ai_test_architect.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/yassineaitt/ai-test-architect"
@@ -58,7 +58,7 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PT", "RET", "RUF", "ANN", "S", "T20", "PL"]
 ignore = ["ANN401", "PLR0913", "S101"]
-per-file-ignores = { "tests/**" = ["S", "PLR2004", "ANN"], "src/ai_test_architect/cli.py" = ["T20", "PLR0913"] }
+per-file-ignores = { "tests/**" = ["S", "PLR2004", "ANN"], "src/ai_test_architect/cli.py" = ["T20", "PLR0913", "PLR0917"] }
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

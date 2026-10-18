@@ -1,4 +1,4 @@
-from ai_test_architect.cli import app
+from ai_test_architect.cli import main
 
 if __name__ == "__main__":
-    app()
+    main()
