@@ -22,7 +22,6 @@ dependencies = [
   "pyyaml>=6.0",
   "openapi-spec-validator>=0.7",
   "junitparser>=3.2",
-  "httpx>=0.28",
 ]
 
 [project.scripts]
@@ -36,7 +35,7 @@ Issues = "https://github.com/yassineaitt/ai-test-architect/issues"
 dev = [
   "pytest>=8.4",
   "pytest-cov>=6.2",
-  "respx>=0.22",
+  "httpx2",
   "ruff>=0.12",
   "mypy>=1.17",
   "types-PyYAML",
