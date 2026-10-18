@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="api" tests="4" failures="1" errors="1" time="12.4">
+    <testcase classname="tests.api.test_pets" name="test_create_pet_returns_201" time="0.41" file="tests/api/test_pets.py"/>
+    <testcase classname="tests.api.test_pets" name="test_get_pet_by_id" time="0.38" file="tests/api/test_pets.py"/>
+    <testcase classname="tests.api.test_adoptions" name="test_request_adoption_accepted" time="5.02" file="tests/api/test_adoptions.py">
+      <failure message="AssertionError: expected 202, got 500">tests/api/test_adoptions.py:31: in test_request_adoption_accepted
+    assert res.status_code == 202, res.text
+E   AssertionError: expected 202, got 500
+E   assert 500 == 202
+E   {"code":"INTERNAL","message":"relation \"adoption_requests\" does not exist"}</failure>
+    </testcase>
+    <testcase classname="tests.api.test_adoptions" name="test_adoption_conflict_when_pet_adopted" time="6.59" file="tests/api/test_adoptions.py">
+      <error message="httpx.ReadTimeout: timed out">tests/api/test_adoptions.py:44: in test_adoption_conflict_when_pet_adopted
+    res = api.post(f"/pets/{adopted_pet}/adoptions", json=body)
+E   httpx.ReadTimeout: timed out</error>
+    </testcase>
+  </testsuite>
+</testsuites>

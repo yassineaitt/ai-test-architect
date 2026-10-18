@@ -1,0 +1,12 @@
+2026-10-18T14:02:11.004Z INFO  server listening on :8080 (build 4f2c1a9)
+2026-10-18T14:02:11.120Z INFO  db connected host=db.internal user=app password=s3cr3t-pass
+2026-10-18T14:02:11.121Z WARN  migration runner skipped: MIGRATIONS_ENABLED=false
+2026-10-18T14:02:14.880Z INFO  POST /api/v1/pets 201 41ms
+2026-10-18T14:02:15.263Z INFO  GET /api/v1/pets/0b6f0c0e-2a3f-4f5c-9d0e-2b1c7b5a9c11 200 38ms
+2026-10-18T14:02:20.300Z ERROR POST /api/v1/pets/0b6f0c0e-2a3f-4f5c-9d0e-2b1c7b5a9c11/adoptions 500 5002ms
+2026-10-18T14:02:20.301Z ERROR psycopg.errors.UndefinedTable: relation "adoption_requests" does not exist
+    LINE 1: INSERT INTO adoption_requests (id, pet_id, adopter_email, st...
+2026-10-18T14:02:20.302Z ERROR   at AdoptionRepository.create (app/repositories/adoption.py:48)
+2026-10-18T14:02:20.302Z ERROR   at AdoptionService.request (app/services/adoption.py:22)
+2026-10-18T14:02:26.900Z WARN  POST /api/v1/pets/7a1d.../adoptions still running after 6500ms (db pool exhausted: 10/10 in use)
+2026-10-18T14:02:27.411Z INFO  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0In0.QmF0bWFuIGlzIG5vdCBhIHNlY3JldA
