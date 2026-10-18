@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><title>Checkout · Pet Shelter</title><script>window.__x = 1;</script></head>
+<body>
+  <header><nav aria-label="Primary"><a href="/">Home</a><a href="/pets">Pets</a></nav></header>
+  <main>
+    <h1>Adoption request</h1>
+    <form data-testid="adoption-form" method="post">
+      <label for="email-field">Your email</label>
+      <input id="email-field" name="adopterEmail" type="email" placeholder="you@example.com" />
+      <label for="msg">Message to the shelter</label>
+      <textarea id="msg" name="message"></textarea>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" data-testid="cancel-adoption">Cancel</button>
+        <button type="submit" class="btn btn-primary" data-testid="submit-adoption">Send request</button>
+      </div>
+    </form>
+    <section aria-live="polite" role="status" id="toast-root"></section>
+  </main>
+  <footer><a href="/privacy">Privacy</a></footer>
+</body>
+</html>
