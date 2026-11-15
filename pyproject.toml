@@ -15,7 +15,7 @@ classifiers = [
   "Topic :: Software Development :: Testing",
 ]
 dependencies = [
-  "anthropic>=1.15,<2",
+  "anthropic>=1.15,<3",
   "pydantic>=2.11,<3",
   "typer>=0.17",
   "rich>=14",
